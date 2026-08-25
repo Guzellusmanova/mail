@@ -54,6 +54,13 @@
     padding:22px 40px;
     background:linear-gradient(to bottom, rgba(10,9,16,0.85), transparent);
     backdrop-filter:blur(2px);
+    transition:padding .4s cubic-bezier(.16,.84,.44,1), background .4s ease, box-shadow .4s ease;
+  }
+  nav.scrolled{
+    padding:14px 40px;
+    background:rgba(10,9,16,0.92);
+    backdrop-filter:blur(14px);
+    box-shadow:0 1px 0 var(--line);
   }
   .logo{font-family:'Unbounded',sans-serif;font-weight:700;font-size:18px;letter-spacing:0.02em;}
   .logo span{color:var(--pink);}
@@ -72,10 +79,19 @@
     border-radius:999px;
     border:none;
     cursor:pointer;
+    position:relative;
+    overflow:hidden;
     transition:transform .25s ease, background .25s ease, box-shadow .25s ease;
     box-shadow:0 8px 24px -8px rgba(232,87,141,0.6);
   }
-  .btn:hover{background:var(--pink-bright);transform:translateY(-2px);}
+  .btn::before{
+    content:"";position:absolute;top:0;left:-120%;width:60%;height:100%;
+    background:linear-gradient(115deg, transparent, rgba(255,255,255,0.45), transparent);
+    transform:skewX(-20deg);
+    transition:left .65s cubic-bezier(.16,.84,.44,1);
+  }
+  .btn:hover::before{left:130%;}
+  .btn:hover{background:var(--pink-bright);transform:translateY(-2px);box-shadow:0 12px 30px -8px rgba(255,122,173,0.75);}
   .btn-ghost{
     background:transparent;
     border:1.5px solid var(--line);
@@ -95,7 +111,7 @@
   .hero-photo{
     position:relative;
     width:100%;
-    aspect-ratio:1122/1402;
+    aspect-ratio:1086/1448;
     overflow:hidden;
   }
   .hero-photo img{
@@ -124,33 +140,35 @@
   @media(min-width:900px){
     .hero{
       display:block;
-      min-height:100svh;
+      min-height:auto;
       overflow:hidden;
     }
     .hero-photo{
-      position:absolute;inset:0;
-      width:100%;height:100%;
-      aspect-ratio:auto;
+      position:relative;
+      width:100%;height:auto;
+      aspect-ratio:1536/1024;
     }
-    .hero-photo img{object-position:50% 22%;}
-    .hero::after{
-      content:"";position:absolute;inset:0;
-      background:linear-gradient(0deg, rgba(6,5,10,0.92) 0%, rgba(6,5,10,0.15) 32%, transparent 55%);
-      pointer-events:none;
-    }
+    .hero-photo img{object-position:50% 50%;}
     .hero-bottom{
-      position:absolute;left:0;right:0;bottom:0;z-index:2;
-      padding:0 56px 76px;
+      display:flex;flex-direction:row;align-items:center;justify-content:space-between;
+      flex-wrap:wrap;
+      padding:32px 56px;
       gap:26px;
+      background:var(--panel);
+      border-bottom:1px solid var(--line);
     }
     .hero-stats{
-      align-self:flex-start;
-      background:rgba(10,9,16,0.5);
-      backdrop-filter:blur(10px);
-      border:1px solid rgba(255,255,255,0.1);
-      border-radius:16px;
-      padding:18px 28px;
-      gap:38px;
+      background:none;
+      border:none;
+      padding:0;
+      gap:0;
+    }
+    .hero-stats > div{
+      padding:0 40px;
+      border-left:1px solid var(--line);
+    }
+    .hero-stats > div:first-child{
+      padding-left:0;border-left:none;
     }
     .hero-actions{background:none;padding:0;}
   }
@@ -164,10 +182,11 @@
 
   /* ===== SCROLL REVEAL ===== */
   .reveal{
-    opacity:0;transform:translateY(26px);
-    transition:opacity .7s cubic-bezier(.16,.84,.44,1), transform .7s cubic-bezier(.16,.84,.44,1);
+    opacity:0;transform:translateY(30px);
+    filter:blur(6px);
+    transition:opacity .9s cubic-bezier(.16,.84,.44,1), transform .9s cubic-bezier(.16,.84,.44,1), filter .9s cubic-bezier(.16,.84,.44,1);
   }
-  .reveal.in-view{opacity:1;transform:none;}
+  .reveal.in-view{opacity:1;transform:none;filter:blur(0);}
   .whofor-item.reveal:nth-child(1),.acc-item.reveal:nth-child(1),.price-card.reveal:nth-child(1){transition-delay:0s;}
   .whofor-item.reveal:nth-child(2),.acc-item.reveal:nth-child(2),.price-card.reveal:nth-child(2){transition-delay:.08s;}
   .whofor-item.reveal:nth-child(3),.acc-item.reveal:nth-child(3),.price-card.reveal:nth-child(3){transition-delay:.16s;}
@@ -178,7 +197,31 @@
   .acc-item.reveal:nth-child(8){transition-delay:.56s;}
   .acc-item.reveal:nth-child(9){transition-delay:.64s;}
   @media(prefers-reduced-motion:reduce){
-    .reveal{opacity:1;transform:none;transition:none;}
+    .reveal{opacity:1;transform:none;filter:none;transition:none;}
+  }
+
+  /* ===== SCROLL PROGRESS BAR ===== */
+  .scroll-progress{
+    position:fixed;top:0;left:0;height:3px;width:0%;
+    background:linear-gradient(90deg, var(--pink-dim), var(--pink-bright));
+    z-index:999;
+    transition:width .1s linear;
+  }
+
+  /* ===== IMAGE CURTAIN REVEAL ===== */
+  .img-reveal{position:relative;overflow:hidden;}
+  .img-reveal::after{
+    content:"";position:absolute;inset:0;
+    background:var(--void);
+    transform:scaleX(1);transform-origin:right;
+    transition:transform 1s cubic-bezier(.76,0,.24,1);
+    z-index:2;
+  }
+  .img-reveal.in-view::after{transform:scaleX(0);}
+  .img-reveal img{transition:transform 1.2s cubic-bezier(.16,.84,.44,1);transform:scale(1.08);}
+  .img-reveal.in-view img{transform:scale(1);}
+  @media(prefers-reduced-motion:reduce){
+    .img-reveal::after{display:none;}
   }
 
   /* ===== SECTION SCAFFOLD ===== */
@@ -199,10 +242,9 @@
   }
   .about-lead b{color:var(--pink-bright);}
   .about-grid{
-    display:grid;grid-template-columns:1fr;gap:0;
+    display:block;
     border-top:1px solid var(--line);
   }
-  @media(min-width:800px){.about-grid{grid-template-columns:220px 1fr;}}
   .about-row{
     display:grid;grid-template-columns:1fr;gap:14px;
     padding:38px 0;border-bottom:1px solid var(--line);
@@ -259,8 +301,11 @@
   .whofor-item{
     padding:28px 0;border-bottom:1px solid var(--line);
     display:grid;grid-template-columns:24px 1fr;gap:20px;
+    transition:padding-left .35s cubic-bezier(.16,.84,.44,1);
   }
-  .whofor-item .mark{color:var(--pink);font-family:'Unbounded';font-weight:800;font-size:20px;}
+  .whofor-item:hover{padding-left:10px;}
+  .whofor-item .mark{color:var(--pink);font-family:'Unbounded';font-weight:800;font-size:20px;transition:color .3s;}
+  .whofor-item:hover .mark{color:var(--pink-bright);}
   .whofor-item p{color:var(--ink);font-size:17px;line-height:1.6;font-weight:600;max-width:720px;}
 
   /* ===== FAQ / ACCORDION ("с чем можно прийти") ===== */
@@ -281,9 +326,15 @@
   }
   .acc-item.open .plus{transform:rotate(45deg);border-color:var(--pink);}
   .acc-a{
-    max-height:0;overflow:hidden;transition:max-height .38s ease;
+    max-height:0;overflow:hidden;
+    transition:max-height .5s cubic-bezier(.16,.84,.44,1);
   }
-  .acc-a p{color:var(--muted);font-size:15.5px;line-height:1.7;padding:0 4px 26px;max-width:680px;}
+  .acc-a p{
+    color:var(--muted);font-size:15.5px;line-height:1.7;padding:0 4px 26px;max-width:680px;
+    opacity:0;transform:translateY(-6px);
+    transition:opacity .4s ease .1s, transform .4s ease .1s;
+  }
+  .acc-item.open .acc-a p{opacity:1;transform:none;}
 
   /* ===== METHOD ===== */
   .method{background:var(--void);}
@@ -323,6 +374,17 @@
     background:linear-gradient(180deg, rgba(232,87,141,0.14), var(--panel-2) 40%);
     position:relative;
   }
+  .price-card.featured::after{
+    content:"";position:absolute;inset:-1px;border-radius:22px;
+    box-shadow:0 0 0 1px var(--pink), 0 0 24px 2px rgba(255,122,173,0.25);
+    pointer-events:none;
+    animation:featuredPulse 3.2s ease-in-out infinite;
+  }
+  @media(prefers-reduced-motion:reduce){.price-card.featured::after{animation:none;}}
+  @keyframes featuredPulse{
+    0%,100%{box-shadow:0 0 0 1px var(--pink), 0 0 20px 0px rgba(255,122,173,0.2);}
+    50%{box-shadow:0 0 0 1px var(--pink-bright), 0 0 34px 4px rgba(255,122,173,0.4);}
+  }
   .price-tag{
     align-self:flex-start;
     font-size:11px;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;
@@ -339,6 +401,7 @@
     display:flex;gap:10px;
   }
   .price-list li::before{content:"—";color:var(--pink);flex:none;}
+  .price-note{color:var(--muted);font-style:italic;font-size:13.5px;margin-bottom:20px;}
   .price-card .btn{width:100%;justify-content:center;}
 
   /* ===== CASES TEASER ===== */
@@ -404,17 +467,22 @@
     border-radius:20px;overflow:hidden;
     border:1px solid var(--line);
     background:var(--panel-2);
+    transition:transform .35s cubic-bezier(.16,.84,.44,1), border-color .35s;
   }
+  .gallery-item:hover{transform:translateY(-6px);border-color:var(--pink-dim);}
   .gallery-item img{width:100%;display:block;}
   .gallery-item.wide{grid-column:1 / -1;max-width:640px;margin:0 auto;}
   .back-link{
     display:inline-flex;align-items:center;gap:8px;
     color:var(--muted);font-size:14px;margin-bottom:8px;
+    transition:color .2s, gap .2s;
   }
-  .back-link:hover{color:var(--pink-bright);}
+  .back-link:hover{color:var(--pink-bright);gap:12px;}
 </style>
 <body>
-<nav>
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<nav id="mainNav">
   <div class="logo">Guzel <span>Usmanova</span></div>
   <div class="nav-links" style="display:none;" id="navLinksDesktop"></div>
   <a href="index.html#format" class="btn nav-cta">Начать</a>
@@ -429,11 +497,11 @@
 <section class="gallery">
   <div class="wrap">
     <div class="gallery-grid">
-      <div class="gallery-item wide"><img src="assets/cases/case-3.webp" alt="Кейс клиента — рост выручки за 3 месяца"></div>
-      <div class="gallery-item"><img src="assets/cases/case-2.webp" alt="Отзыв клиента — Instagram стал каналом продаж"></div>
-      <div class="gallery-item"><img src="assets/cases/case-1.webp" alt="В практикум зашёл крупный блогер"></div>
-      <div class="gallery-item"><img src="assets/cases/case-4.webp" alt="Ещё отзывы и комментарии"></div>
-      <div class="gallery-item"><img src="assets/cases/case-5.webp" alt="Комментарии подписчиков"></div>
+      <div class="gallery-item img-reveal reveal wide"><img src="assets/cases/case-3.webp" alt="Кейс клиента — рост выручки за 3 месяца"></div>
+      <div class="gallery-item img-reveal reveal"><img src="assets/cases/case-2.webp" alt="Отзыв клиента — Instagram стал каналом продаж"></div>
+      <div class="gallery-item img-reveal reveal"><img src="assets/cases/case-1.webp" alt="В практикум зашёл крупный блогер"></div>
+      <div class="gallery-item img-reveal reveal"><img src="assets/cases/case-4.webp" alt="Ещё отзывы и комментарии"></div>
+      <div class="gallery-item img-reveal reveal"><img src="assets/cases/case-5.webp" alt="Комментарии подписчиков"></div>
     </div>
   </div>
 </section>
@@ -456,6 +524,40 @@
     <div class="foot-copy">© 2026 Гузель Усманова</div>
   </div>
 </footer>
+
+<script>
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const progressBar = document.getElementById('scrollProgress');
+  const mainNav = document.getElementById('mainNav');
+  function onScroll(){
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+    if(progressBar) progressBar.style.width = pct + '%';
+    if(mainNav){
+      if(scrollTop > 40) mainNav.classList.add('scrolled');
+      else mainNav.classList.remove('scrolled');
+    }
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  const revealEls = document.querySelectorAll('.reveal');
+  if(reduceMotion){
+    revealEls.forEach(el=>el.classList.add('in-view'));
+  } else {
+    const revealObserver = new IntersectionObserver(entries=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){
+          entry.target.classList.add('in-view');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, {threshold:0.12, rootMargin:'0px 0px -60px 0px'});
+    revealEls.forEach(el=>revealObserver.observe(el));
+  }
+</script>
 
 </body>
 </html>
