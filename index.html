@@ -456,6 +456,12 @@
   }
   .apply-field select option{background:var(--panel-2);color:var(--ink);}
   .apply-form .btn{align-self:flex-start;border:none;cursor:pointer;font:inherit;font-weight:800;}
+  .apply-consent{
+    display:flex;align-items:flex-start;gap:10px;
+    font-size:12.5px;color:var(--muted);line-height:1.5;cursor:pointer;
+  }
+  .apply-consent input{width:16px;height:16px;flex:none;margin-top:2px;accent-color:var(--pink);cursor:pointer;}
+  .apply-consent a{color:var(--pink-bright);}
   .apply-note{color:var(--muted);font-size:12.5px;margin-top:14px;}
 
   /* ===== CASES TEASER ===== */
@@ -808,6 +814,10 @@
         <label for="applyMessage">Коротко о запросе (необязательно)</label>
         <textarea id="applyMessage" name="message"></textarea>
       </div>
+      <label class="apply-consent">
+        <input type="checkbox" id="applyConsent" required>
+        <span>Согласен(на) с <a href="oferta.html" target="_blank">офертой</a>, <a href="privacy.html" target="_blank">политикой конфиденциальности</a> и <a href="consent.html" target="_blank">обработкой персональных данных</a></span>
+      </label>
       <button type="submit" class="btn">Отправить заявку</button>
     </form>
     <p class="apply-note">Заявка откроется в твоей почте — письмо уйдёт на временный адрес-заглушку, замени его на свой в коде сайта (переменная APPLY_EMAIL в конце страницы).</p>
@@ -879,7 +889,9 @@
     </div>
 
     <div class="foot-legal">
+      <a href="oferta.html">Публичная оферта</a>
       <a href="privacy.html">Политика конфиденциальности</a>
+      <a href="consent.html">Согласие на обработку данных</a>
       <a href="privacy.html#cookies">Использование cookie</a>
       <div class="foot-copy">© 2026 Гузель Усманова</div>
     </div>
