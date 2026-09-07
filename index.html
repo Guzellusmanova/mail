@@ -68,7 +68,8 @@
   .nav-links a{opacity:0.8;transition:opacity .2s, color .2s;}
   .nav-links a:hover{opacity:1;color:var(--pink-bright);}
   .btn{
-    display:inline-flex;align-items:center;gap:10px;
+    display:inline-flex;align-items:center;justify-content:center;gap:10px;
+    text-align:center;
     background:var(--pink);
     color:#180810;
     font-weight:800;
@@ -137,6 +138,10 @@
     display:flex;flex-wrap:wrap;gap:14px;
     padding:28px 24px 34px;
     background:var(--void);
+  }
+  @media(max-width:479px){
+    .hero-actions{flex-direction:column;}
+    .hero-actions .btn{width:100%;}
   }
   @media(min-width:900px){
     .hero{
@@ -317,6 +322,13 @@
   .feature-copy cite{
     font-style:normal;color:var(--muted);font-size:14px;letter-spacing:0.04em;
   }
+  .feature-link{
+    display:inline-flex;align-items:center;gap:8px;
+    margin-top:28px;color:var(--pink-bright);font-weight:700;font-size:14px;
+    letter-spacing:0.02em;
+  }
+  .feature-link .arrow{transition:transform .3s ease;}
+  .feature-link:hover .arrow{transform:translateX(6px);}
 
   /* ===== WHO FOR — pull quote strip ===== */
   .whofor{background:var(--void);}
@@ -426,6 +438,15 @@
   .price-list li::before{content:"—";color:var(--pink);flex:none;}
   .price-note{color:var(--muted);font-style:italic;font-size:13.5px;margin-bottom:20px;}
   .price-card .btn{width:100%;justify-content:center;}
+  .price-quiz-link{
+    display:flex;align-items:center;justify-content:center;gap:8px;
+    text-align:center;font-size:13px;color:var(--pink-bright);
+    padding:12px 0;margin-bottom:12px;
+    border:1px dashed var(--pink-dim);border-radius:12px;
+  }
+  .price-quiz-link:hover{border-color:var(--pink);}
+  .price-quiz-link .arrow{transition:transform .3s ease;}
+  .price-quiz-link:hover .arrow{transform:translateX(4px);}
 
   /* ===== APPLY FORM ===== */
   .apply{background:var(--panel);}
@@ -694,6 +715,7 @@
     <div class="feature-copy">
       <blockquote>Я боялась заявить о себе настоящей и пряталась под маской <span class="hl">«правильного эксперта»</span>.</blockquote>
       <cite>— Гузель, о собственном пути в блогинге</cite>
+      <a href="#about" class="feature-link">Читать мою историю <span class="arrow">→</span></a>
     </div>
   </div>
 </section>
@@ -738,7 +760,7 @@
           <li>Мощная поддержка: идеи для роликов, заголовки, чат единомышленников</li>
         </ul>
         <p class="price-note">Клуб открыт для всех, кто готов развивать свой блог в комфортном темпе и без насилия над собой.</p>
-        <a href="#apply" class="btn btn-ghost apply-link" data-tariff="Клуб «Шаг вперёд»">Присоединиться к клубу</a>
+        <a href="https://t.me/tribute/app?startapp=ep_zdhd9krGZtoaElPAUT2qdcFERHCLDNOuGyqBHT52AOFl2IwOK6l" target="_blank" rel="noopener" class="btn btn-ghost">Присоединиться к клубу</a>
       </div>
 
       <div class="price-card">
@@ -780,7 +802,8 @@
           <li>Дополнительный пассивный доход от 30 000 рублей в месяц без твоего круглосуточного присутствия в блоге</li>
           <li>Ты создаёшь воронку один раз и освобождаешь своё время для жизни</li>
         </ul>
-        <a href="#apply" class="btn btn-ghost apply-link" data-tariff="Практикум «Минимани»">Пройти практикум</a>
+        <a href="quiz.html" class="price-quiz-link">Не знаешь, какой продукт твой? Пройди тест <span class="arrow">→</span></a>
+        <a href="https://t.me/tribute/app?startapp=ep_zdhddnenKM8s2fEskyUS2qVe57WULqviNefLza9KueX1TiHgQ99" target="_blank" rel="noopener" class="btn btn-ghost">Купить доступ</a>
       </div>
     </div>
   </div>
@@ -1039,7 +1062,7 @@
   }
 
   // Scroll reveal
-  const revealSelectors = '.section-head, .about-lead, .about-highlight, .about-toggle, .about-row, .feature-copy blockquote, .feature-copy cite, .whofor-item, .acc-item, .method-flow, .method-cols > div, .method-quote, .price-card, .final h2, .final p, .final .btn, .img-reveal, .case-card, .apply-form, .apply-note';
+  const revealSelectors = '.section-head, .about-lead, .about-highlight, .about-toggle, .about-row, .feature-copy blockquote, .feature-copy cite, .feature-link, .whofor-item, .acc-item, .method-flow, .method-cols > div, .method-quote, .price-card, .final h2, .final p, .final .btn, .img-reveal, .case-card, .apply-form, .apply-note';
   const revealEls = document.querySelectorAll(revealSelectors);
   revealEls.forEach(el=>el.classList.add('reveal'));
   if(reduceMotion){
